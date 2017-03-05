@@ -1,15 +1,11 @@
-package com.aware.plugin.template;
+package com.aware.plugin.flic_buttons;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 
 import com.aware.Aware;
 import com.aware.Aware_Preferences;
-import com.aware.ui.PermissionsHandler;
 import com.aware.utils.Aware_Plugin;
-import com.aware.utils.PluginsManager;
 
 public class Plugin extends Aware_Plugin {
 

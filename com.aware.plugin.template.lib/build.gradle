@@ -69,7 +69,12 @@ configurations.all {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:${support_libs}"
-    compile "com.github.denzilferreira:aware-client:$aware_libs"
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "com.android.support:appcompat-v7:$support_libs"
+    compile "com.android.support:design:$support_libs"
+    compile "com.android.support:gridlayout-v7:$support_libs"
+    compile project(':aware-core-release')
+    compile 'net.zetetic:android-database-sqlcipher:3.5.3@aar'
+    compile "com.koushikdutta.ion:ion:$ion_libs"
+    compile "org.eclipse.paho:org.eclipse.paho.client.mqttv3:$mqtt_libs"
 }
