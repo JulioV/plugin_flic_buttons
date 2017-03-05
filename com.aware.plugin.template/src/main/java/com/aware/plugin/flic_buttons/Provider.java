@@ -21,13 +21,13 @@ import java.util.HashMap;
 
 public class Provider extends ContentProvider {
 
-    public static String AUTHORITY = "com.aware.plugin.template.provider.xxx"; //change to package.provider.your_plugin_name
+    public static String AUTHORITY = "com.aware.plugin.flic_buttons.provider.flic_buttons"; //change to package.provider.your_plugin_name
 
     public static final int DATABASE_VERSION = 1; //increase this if you make changes to the database structure, i.e., rename columns, etc.
-    public static final String DATABASE_NAME = "plugin_template.db"; //the database filename, use plugin_xxx for plugins.
+    public static final String DATABASE_NAME = "plugin_flic_buttons.db"; //the database filename, use plugin_xxx for plugins.
 
     //Add here your database table names, as many as you need
-    public static final String DB_TBL_TEMPLATE = "table_one";
+    public static final String DB_TBL_TEMPLATE = "clicks";
 
     //For each table, add two indexes: DIR and ITEM. The index needs to always increment. Next one is 3, and so on.
     private static final int TABLE_ONE_DIR = 1;
@@ -49,25 +49,21 @@ public class Provider extends ContentProvider {
      * Create one of these per database table
      * In this example, we are adding example columns
      */
-    public static final class TableOne_Data implements AWAREColumns {
+    public static final class FlicButtons_Data implements AWAREColumns {
         public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + DB_TBL_TEMPLATE);
-        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.aware.plugin.template.provider.table_one"; //modify me
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.aware.plugin.template.provider.table_one"; //modify me
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd.com.aware.plugin.flic_buttons.provider.clicks"; //modify me
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd.com.aware.plugin.flic_buttons.provider.clicks"; //modify me
 
         //Note: integers and strings don't need a type prefix_
-        public static final String NAME = "name";
-        public static final String BIG_NUMBER = "double_big_number"; //a double_ prefix makes a MySQL DOUBLE column
-        public static final String PICTURE = "blob_picture"; //a blob_ prefix makes a MySQL BLOB column
+        public static final String BUTTON = "button";
     }
 
     //Define each database table fields
     private static final String DB_TBL_TEMPLATE_FIELDS =
-        TableOne_Data._ID + " integer primary key autoincrement," +
-        TableOne_Data.TIMESTAMP + " real default 0," +
-        TableOne_Data.DEVICE_ID + " text default ''," +
-        TableOne_Data.NAME + " text default ''," +
-        TableOne_Data.BIG_NUMBER + " real default 0," +
-        TableOne_Data.PICTURE + " blob default null";
+        FlicButtons_Data._ID + " integer primary key autoincrement," +
+        FlicButtons_Data.TIMESTAMP + " real default 0," +
+        FlicButtons_Data.DEVICE_ID + " text default ''," +
+        FlicButtons_Data.BUTTON + " text default ''";
 
     /**
      * Share the fields with AWARE so we can replicate the table schema on the server
@@ -94,7 +90,7 @@ public class Provider extends ContentProvider {
     @Override
     public boolean onCreate() {
         //This is a hack to allow providers to be reusable in any application/plugin by making the authority dynamic using the package name of the parent app
-        AUTHORITY = getContext().getPackageName() + ".provider.xxx"; //make sure xxx matches the first string in this class
+        AUTHORITY = getContext().getPackageName() + ".provider.flic_buttons"; //make sure xxx matches the first string in this class
 
         sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -104,12 +100,10 @@ public class Provider extends ContentProvider {
 
         //Create each table hashmap so Android knows how to insert data to the database. Put ALL table fields.
         tableOneHash = new HashMap<>();
-        tableOneHash.put(TableOne_Data._ID, TableOne_Data._ID);
-        tableOneHash.put(TableOne_Data.TIMESTAMP, TableOne_Data.TIMESTAMP);
-        tableOneHash.put(TableOne_Data.DEVICE_ID, TableOne_Data.DEVICE_ID);
-        tableOneHash.put(TableOne_Data.NAME, TableOne_Data.NAME);
-        tableOneHash.put(TableOne_Data.BIG_NUMBER, TableOne_Data.BIG_NUMBER);
-        tableOneHash.put(TableOne_Data.PICTURE, TableOne_Data.PICTURE);
+        tableOneHash.put(FlicButtons_Data._ID, FlicButtons_Data._ID);
+        tableOneHash.put(FlicButtons_Data.TIMESTAMP, FlicButtons_Data.TIMESTAMP);
+        tableOneHash.put(FlicButtons_Data.DEVICE_ID, FlicButtons_Data.DEVICE_ID);
+        tableOneHash.put(FlicButtons_Data.BUTTON, FlicButtons_Data.BUTTON);
 
         return true;
     }
@@ -154,11 +148,11 @@ public class Provider extends ContentProvider {
 
             //Add each table DIR case
             case TABLE_ONE_DIR:
-                long _id = database.insert(DATABASE_TABLES[0], TableOne_Data.DEVICE_ID, values);
+                long _id = database.insert(DATABASE_TABLES[0], FlicButtons_Data.DEVICE_ID, values);
                 database.setTransactionSuccessful();
                 database.endTransaction();
                 if (_id > 0) {
-                    Uri dataUri = ContentUris.withAppendedId(TableOne_Data.CONTENT_URI, _id);
+                    Uri dataUri = ContentUris.withAppendedId(FlicButtons_Data.CONTENT_URI, _id);
                     getContext().getContentResolver().notifyChange(dataUri, null);
                     return dataUri;
                 }
@@ -209,9 +203,9 @@ public class Provider extends ContentProvider {
 
             //Add each table indexes DIR and ITEM
             case TABLE_ONE_DIR:
-                return TableOne_Data.CONTENT_TYPE;
+                return FlicButtons_Data.CONTENT_TYPE;
             case TABLE_ONE_ITEM:
-                return TableOne_Data.CONTENT_ITEM_TYPE;
+                return FlicButtons_Data.CONTENT_ITEM_TYPE;
 
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);

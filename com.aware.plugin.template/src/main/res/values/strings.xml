@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AWARE: Flic buttons</string>
+    <string name="last_buttons">Last pressed buttons</string>
 </resources>
